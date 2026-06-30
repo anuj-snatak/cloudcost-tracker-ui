@@ -1,171 +1,180 @@
 import streamlit as st
-from auth import login, is_logged_in
-
-NAVY = "#1e3a5f"
-GOLD = "#c9a84c"
-PRIMARY = "#1e3a5f"
+from auth import login
 
 def show_login_page():
-    st.markdown(f"""
+    st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
-    * {{ font-family: 'Inter', sans-serif; }}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
 
-    .stApp {{ background: #f0f2f8; }}
+    .stApp { background: #0f172a !important; }
+    footer, #MainMenu, header { visibility: hidden; }
 
-    .login-wrapper {{
-        display: flex; justify-content: center; align-items: center;
-        min-height: 90vh;
-    }}
+    /* hide default streamlit padding */
+    .block-container { padding: 0 !important; max-width: 100% !important; }
+    section[data-testid="stMain"] > div { padding: 0 !important; }
 
-    .login-hero {{
-        background: linear-gradient(135deg, {NAVY} 0%, #2a5280 100%);
-        border-radius: 20px 0 0 20px;
-        padding: 60px 50px;
-        color: white;
-        min-height: 550px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }}
-
-    .login-brand {{
-        font-family: 'Playfair Display', serif;
-        font-size: 2.2em;
-        font-weight: 800;
-        color: white;
-        margin-bottom: 8px;
-    }}
-
-    .login-tagline {{
-        color: {GOLD};
-        font-size: 0.95em;
-        font-weight: 500;
-        letter-spacing: 1px;
-        margin-bottom: 40px;
-    }}
-
-    .feature-item {{
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 14px 0;
-        color: rgba(255,255,255,0.85);
-        font-size: 0.95em;
-    }}
-
-    .feature-dot {{
-        width: 8px; height: 8px;
-        background: {GOLD};
-        border-radius: 50%;
-        flex-shrink: 0;
-    }}
-
-    .login-form-box {{
-        background: white;
-        border-radius: 0 20px 20px 0;
-        padding: 60px 50px;
-        min-height: 550px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 8px 0 40px rgba(0,0,0,0.08);
-    }}
-
-    .login-form-title {{
-        font-size: 1.8em;
-        font-weight: 700;
-        color: {NAVY};
-        margin-bottom: 6px;
-    }}
-
-    .login-form-sub {{
-        color: #8896a7;
-        font-size: 0.9em;
-        margin-bottom: 32px;
-    }}
-
-    .stat-box {{
-        background: rgba(255,255,255,0.08);
-        border-radius: 12px;
-        padding: 16px 20px;
-        margin-top: 40px;
-        display: flex;
-        gap: 30px;
-    }}
-
-    .stat-item {{ text-align: center; }}
-    .stat-num {{ font-size: 1.5em; font-weight: 700; color: {GOLD}; }}
-    .stat-label {{ font-size: 0.75em; color: rgba(255,255,255,0.6); margin-top: 2px; }}
-
-    div[data-testid="stTextInput"] input {{
-        border: 1.5px solid #d4d9e2 !important;
+    /* inputs */
+    div[data-testid="stTextInput"] input {
+        background: #1e293b !important;
+        border: 1.5px solid #334155 !important;
         border-radius: 10px !important;
+        color: #f1f5f9 !important;
         padding: 12px 16px !important;
         font-size: 0.95em !important;
-        color: {NAVY} !important;
-        background: #f8fafc !important;
-    }}
-    div[data-testid="stTextInput"] input:focus {{
-        border-color: {NAVY} !important;
-        box-shadow: 0 0 0 3px rgba(30,58,95,0.1) !important;
-    }}
+    }
+    div[data-testid="stTextInput"] input:focus {
+        border-color: #f59e0b !important;
+        box-shadow: 0 0 0 3px rgba(245,158,11,0.15) !important;
+        background: #1e293b !important;
+    }
+    div[data-testid="stTextInput"] input::placeholder { color: #64748b !important; }
+    div[data-testid="stTextInput"] label { color: #94a3b8 !important; font-size: 0.82em !important; font-weight: 600 !important; }
 
-    .stButton button {{
-        background: {NAVY} !important;
-        color: white !important;
+    /* sign in button */
+    .stButton button {
+        background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+        color: #0f172a !important;
         border: none !important;
         border-radius: 10px !important;
         padding: 14px !important;
-        font-weight: 700 !important;
-        font-size: 1em !important;
+        font-weight: 800 !important;
+        font-size: 0.95em !important;
         width: 100% !important;
-        margin-top: 8px !important;
+        letter-spacing: 0.3px !important;
         transition: all 0.2s !important;
-    }}
-    .stButton button:hover {{
-        background: #2a5280 !important;
+        box-shadow: 0 4px 14px rgba(245,158,11,0.3) !important;
+    }
+    .stButton button:hover {
         transform: translateY(-1px) !important;
-        box-shadow: 0 4px 16px rgba(30,58,95,0.3) !important;
-    }}
+        box-shadow: 0 6px 20px rgba(245,158,11,0.45) !important;
+    }
 
-    footer {{ visibility: hidden; }}
-    #MainMenu {{ visibility: hidden; }}
-    header {{ visibility: hidden; }}
+    /* form */
+    div[data-testid="stForm"] {
+        border: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    /* alert/error */
+    div[data-testid="stAlert"] {
+        border-radius: 10px !important;
+        border: none !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-    left, right = st.columns([1.1, 1])
+    left, right = st.columns([1.15, 1])
 
+    # ── LEFT PANEL ──
     with left:
         st.markdown(
-            '<div style="background:linear-gradient(135deg,#1e3a5f 0%,#2a5280 100%);border-radius:20px 0 0 20px;padding:50px 40px;min-height:520px;display:flex;flex-direction:column;justify-content:center;">'
-            '<div style="font-family:Georgia,serif;font-size:2em;font-weight:800;color:white;margin-bottom:6px;">💰 CloudCost Tracker</div>'
-            '<div style="color:#c9a84c;font-size:0.9em;font-weight:600;letter-spacing:1px;margin-bottom:30px;">AWS COST MONITORING PLATFORM</div>'
-            '<div style="display:flex;align-items:center;gap:10px;margin:10px 0;color:rgba(255,255,255,0.85);font-size:0.9em;"><div style="width:8px;height:8px;background:#c9a84c;border-radius:50%;flex-shrink:0;"></div>Real-time AWS cost monitoring &amp; alerts</div>'
-            '<div style="display:flex;align-items:center;gap:10px;margin:10px 0;color:rgba(255,255,255,0.85);font-size:0.9em;"><div style="width:8px;height:8px;background:#c9a84c;border-radius:50%;flex-shrink:0;"></div>Daily, Weekly &amp; Monthly cost comparison</div>'
-            '<div style="display:flex;align-items:center;gap:10px;margin:10px 0;color:rgba(255,255,255,0.85);font-size:0.9em;"><div style="width:8px;height:8px;background:#c9a84c;border-radius:50%;flex-shrink:0;"></div>Cost anomaly detection &amp; root cause analysis</div>'
-            '<div style="display:flex;align-items:center;gap:10px;margin:10px 0;color:rgba(255,255,255,0.85);font-size:0.9em;"><div style="width:8px;height:8px;background:#c9a84c;border-radius:50%;flex-shrink:0;"></div>Forecast vs benchmark tracking</div>'
-            '<div style="display:flex;align-items:center;gap:10px;margin:10px 0;color:rgba(255,255,255,0.85);font-size:0.9em;"><div style="width:8px;height:8px;background:#c9a84c;border-radius:50%;flex-shrink:0;"></div>Service-level deep dive &amp; region analysis</div>'
-            '<div style="display:flex;align-items:center;gap:10px;margin:10px 0;color:rgba(255,255,255,0.85);font-size:0.9em;"><div style="width:8px;height:8px;background:#c9a84c;border-radius:50%;flex-shrink:0;"></div>Automated email reports via AWS SES</div>'
-            '<div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;margin-top:30px;display:flex;gap:30px;">'
-            '<div style="text-align:center;"><div style="font-size:1.5em;font-weight:700;color:#c9a84c;">8+</div><div style="font-size:0.75em;color:rgba(255,255,255,0.6);margin-top:2px;">Dashboard Tabs</div></div>'
-            '<div style="text-align:center;"><div style="font-size:1.5em;font-weight:700;color:#c9a84c;">15+</div><div style="font-size:0.75em;color:rgba(255,255,255,0.6);margin-top:2px;">Cost Metrics</div></div>'
-            '<div style="text-align:center;"><div style="font-size:1.5em;font-weight:700;color:#c9a84c;">100%</div><div style="font-size:0.75em;color:rgba(255,255,255,0.6);margin-top:2px;">AWS Native</div></div>'
+            '<div style="'
+            'min-height:100vh;'
+            'background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 60%,#0f2744 100%);'
+            'padding:60px 56px;'
+            'display:flex;flex-direction:column;justify-content:center;'
+            'position:relative;overflow:hidden;'
+            '">'
+
+            # Decorative circles
+            '<div style="position:absolute;top:-60px;right:-60px;width:280px;height:280px;'
+            'border-radius:50%;background:rgba(245,158,11,0.06);"></div>'
+            '<div style="position:absolute;bottom:-80px;left:-40px;width:220px;height:220px;'
+            'border-radius:50%;background:rgba(99,179,237,0.05);"></div>'
+            '<div style="position:absolute;top:40%;right:10%;width:100px;height:100px;'
+            'border-radius:50%;background:rgba(245,158,11,0.04);"></div>'
+
+            # Logo
+            '<div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;">'
+            '<div style="background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:14px;'
+            'width:52px;height:52px;display:flex;align-items:center;justify-content:center;'
+            'font-size:1.6em;box-shadow:0 4px 20px rgba(245,158,11,0.4);">💰</div>'
+            '<div>'
+            '<div style="font-size:1.55em;font-weight:800;color:#f8fafc;letter-spacing:-0.5px;">CloudCost Tracker</div>'
+            '<div style="font-size:0.72em;font-weight:600;color:#f59e0b;letter-spacing:2px;margin-top:1px;">AWS COST INTELLIGENCE</div>'
+            '</div></div>'
+
+            '<div style="width:48px;height:3px;background:linear-gradient(90deg,#f59e0b,transparent);border-radius:2px;margin:20px 0 32px;"></div>'
+
+            # Features
+            '<div style="font-size:0.78em;font-weight:700;color:#64748b;letter-spacing:1.5px;margin-bottom:16px;">WHAT YOU GET</div>'
+
+            '<div style="display:flex;align-items:center;gap:14px;margin:12px 0;">'
+            '<div style="background:rgba(245,158,11,0.12);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:1em;flex-shrink:0;">📊</div>'
+            '<div><div style="color:#f1f5f9;font-size:0.88em;font-weight:600;">Real-time cost monitoring & alerts</div>'
+            '<div style="color:#64748b;font-size:0.75em;margin-top:2px;">Live AWS spend across all services</div></div></div>'
+
+            '<div style="display:flex;align-items:center;gap:14px;margin:12px 0;">'
+            '<div style="background:rgba(245,158,11,0.12);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:1em;flex-shrink:0;">🔍</div>'
+            '<div><div style="color:#f1f5f9;font-size:0.88em;font-weight:600;">Cost Explorer — Group by anything</div>'
+            '<div style="color:#64748b;font-size:0.75em;margin-top:2px;">Service, Region, Tag, Instance Type</div></div></div>'
+
+            '<div style="display:flex;align-items:center;gap:14px;margin:12px 0;">'
+            '<div style="background:rgba(245,158,11,0.12);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:1em;flex-shrink:0;">🔔</div>'
+            '<div><div style="color:#f1f5f9;font-size:0.88em;font-weight:600;">Anomaly detection & budget alerts</div>'
+            '<div style="color:#64748b;font-size:0.75em;margin-top:2px;">Slack & SES email notifications</div></div></div>'
+
+            '<div style="display:flex;align-items:center;gap:14px;margin:12px 0;">'
+            '<div style="background:rgba(245,158,11,0.12);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:1em;flex-shrink:0;">💡</div>'
+            '<div><div style="color:#f1f5f9;font-size:0.88em;font-weight:600;">Smart savings recommendations</div>'
+            '<div style="color:#64748b;font-size:0.75em;margin-top:2px;">EC2 rightsizing, Savings Plans gap</div></div></div>'
+
+            '<div style="display:flex;align-items:center;gap:14px;margin:12px 0;">'
+            '<div style="background:rgba(245,158,11,0.12);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:1em;flex-shrink:0;">📈</div>'
+            '<div><div style="color:#f1f5f9;font-size:0.88em;font-weight:600;">Forecast vs benchmark tracking</div>'
+            '<div style="color:#64748b;font-size:0.75em;margin-top:2px;">Projected month-end spend</div></div></div>'
+
+            # Stats
+            '<div style="margin-top:36px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">'
+
+            '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);'
+            'border-radius:12px;padding:16px 12px;text-align:center;">'
+            '<div style="font-size:1.6em;font-weight:800;color:#f59e0b;">5</div>'
+            '<div style="font-size:0.7em;color:#64748b;margin-top:3px;font-weight:500;">Smart Tabs</div>'
+            '</div>'
+
+            '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);'
+            'border-radius:12px;padding:16px 12px;text-align:center;">'
+            '<div style="font-size:1.6em;font-weight:800;color:#f59e0b;">15+</div>'
+            '<div style="font-size:0.7em;color:#64748b;margin-top:3px;font-weight:500;">Cost Metrics</div>'
+            '</div>'
+
+            '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);'
+            'border-radius:12px;padding:16px 12px;text-align:center;">'
+            '<div style="font-size:1.6em;font-weight:800;color:#f59e0b;">100%</div>'
+            '<div style="font-size:0.7em;color:#64748b;margin-top:3px;font-weight:500;">AWS Native</div>'
+            '</div>'
+
             '</div></div>',
             unsafe_allow_html=True,
         )
 
+    # ── RIGHT PANEL ──
     with right:
         st.markdown(
-            '<div style="font-size:1.8em;font-weight:700;color:#1e3a5f;margin-bottom:6px;">Welcome back</div>'
-            '<div style="color:#8896a7;font-size:0.9em;margin-bottom:28px;">Sign in to your account to continue</div>',
+            '<div style="min-height:100vh;background:#0f172a;display:flex;'
+            'align-items:center;justify-content:center;padding:40px 48px;">'
+            '<div style="width:100%;max-width:400px;">'
+
+            '<div style="margin-bottom:32px;">'
+            '<div style="font-size:1.7em;font-weight:800;color:#f8fafc;letter-spacing:-0.5px;margin-bottom:8px;">Welcome back 👋</div>'
+            '<div style="color:#64748b;font-size:0.88em;">Sign in to your account to continue</div>'
+            '</div>'
+
+            '</div></div>',
             unsafe_allow_html=True,
         )
 
+        # Spacer to align form vertically
+        st.markdown('<div style="height:22vh;"></div>', unsafe_allow_html=True)
+
         with st.form("login_form", clear_on_submit=False):
-            username = st.text_input("Username", placeholder="Enter your username")
-            password = st.text_input("Password", type="password", placeholder="Enter your password")
+            username = st.text_input("USERNAME", placeholder="Enter your username")
+            st.markdown('<div style="height:8px;"></div>', unsafe_allow_html=True)
+            password = st.text_input("PASSWORD", type="password", placeholder="Enter your password")
+            st.markdown('<div style="height:16px;"></div>', unsafe_allow_html=True)
             submitted = st.form_submit_button("Sign In →", use_container_width=True)
 
             if submitted:
@@ -177,13 +186,12 @@ def show_login_page():
                         if user:
                             st.session_state["logged_in"] = True
                             st.session_state["current_user"] = user
-                            st.success(f"Welcome, {user['full_name']}!")
                             st.rerun()
                         else:
-                            st.error(error)
+                            st.error(error or "Invalid credentials")
 
-        st.markdown("""
-        <div style="text-align:center; margin-top:24px; color:#8896a7; font-size:0.8em;">
-            Contact your administrator to get access
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            '<div style="text-align:center;margin-top:20px;color:#475569;font-size:0.78em;">'
+            'Contact your administrator to get access</div>',
+            unsafe_allow_html=True,
+        )
